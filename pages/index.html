@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>寶可夢色票</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <!-- animate -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        /* 字體 */
+        @import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Rampart+One&display=swap');
+
+        @keyframes changeColor {
+            0% {
+                background-position: 0% 50%;
+            }
+
+
+
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes changeBackground {
+            0% {}
+
+            100% {
+                background: crimson;
+            }
+        }
+
+        :root {
+            --text-primary-color: #333;
+            --text-ls: 4px;
+        }
+
+        body {
+            background: #62d5b4;
+            transition: .5s;
+        }
+
+        /* module */
+        .obj-fit-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .margin-special-top {
+            --margin-top: 100px;
+            margin-top: var(--margin-top);
+        }
+
+
+        .main-pic {
+            width: 240px;
+            height: 240px;
+            /* background: pink; */
+            filter: drop-shadow(5px 5px 5px blue);
+
+            & img {
+                width: 100%;
+            }
+        }
+
+        .pic {
+            width: 72px;
+            /* background: #ccc; */
+        }
+
+        .theme-title {
+            font-family: 'Rampart One', sans-serif;
+            font-size: 5rem;
+            text-align: center;
+            letter-spacing: 10px;
+            color: transparent;
+            background: linear-gradient(-45deg, #FBAB7E, #F7CE68, #85FFBD, #FFFB7D, #FFDEE9);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+        }
+
+        .color-chart {
+            & h2 {
+                font-family: 'DotGothic16';
+                cursor: pointer;
+                color: #333;
+                letter-spacing: var(--text-ls);
+                transition: .5s;
+
+                &:hover {
+                    color: #797979;
+                }
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container margin-special-top">
+        <div>
+            <h1 class="theme-title animate__animated  animate__tada animate__repeat-1 display-1">寶可夢色票</h1>
+        </div>
+        <figure class="main-pic mx-auto">
+            <img src="/images/1.png" alt="妙娃種子">
+        </figure>
+
+        <div class="tumb d-flex  justify-content-center">
+            <div class="pic ratio ratio-1x1 mx-2">
+                <img class="obj-fit-cover" data-color="#62d5b4" src="/images/1.png" alt="">
+            </div>
+            <div class="pic ratio ratio-1x1 mx-2">
+                <img class="obj-fit-cover" data-color="#de5239" src="/images/4.png" alt="">
+            </div>
+            <div class="pic ratio ratio-1x1 mx-2">
+                <img class="obj-fit-cover" data-color="#8bc5cd" src="/images/7.png" alt="">
+            </div>
+            <div class="pic ratio ratio-1x1 mx-2">
+                <img class="obj-fit-cover" data-color="#f6bd20" src="/images/25.png" alt="">
+            </div>
+            <div class="pic ratio ratio-1x1 mx-2">
+                <img class="obj-fit-cover" data-color="#5a4a9c" src="/images/94.png" alt="">
+            </div>
+        </div>
+        <div class="color-chart text-center mt-5">
+            <h2 id="color-chart" class="display-3 mt-5">#62d5b4</h2>
+        </div>
+    </div>
+
+
+    <script>
+        /* 需求： 製作點擊之後切換照片的效果 */
+
+
+        // 1.抓元素 >2. 元素綁定點擊事件>3.拿到元素的src屬性>4.將mainPic的src替換目標的srcs
+
+
+        // 1.抓元素
+
+        // 主圖片元素（mainPic) >主圖片的src mainPic.src 
+        const mainPic = document.querySelector('.main-pic img')
+        // 抓button的元素(tumbButtons) ，做事件委託
+        const tumbButtons = document.querySelector('.tumb')
+
+        //改背景色>body元素>點擊觸發改背景色>body.style
+        const body = document.body
+
+
+        //色票文字
+        const colorChart = document.querySelector('#color-chart')
+
+
+
+        // 2. 元素綁定點擊事件>3.拿到子元素的src屬性>4.將mainPic的src替換目標的srcs
+
+        // 透過事件委託一次綁定所有button > 條件判定，只有點擊img標籤才會執行code
+        tumbButtons.addEventListener('click', function (e) {
+            // 條件判定，點擊的為,<img>標籤，才執行
+            if (e.target.tagName === "IMG") {
+                //點擊時，拿到子元素的src
+                console.log(e.target.src);
+
+                // 替換mainPic的src為點擊的子元素srcs
+                mainPic.src = e.target.src
+
+                // 更改背景色為點擊的子元素data-color
+                console.log(e.target.dataset.color);
+                body.style.backgroundColor = e.target.dataset.color
+
+                // 更改色票
+                colorChart.innerHTML = e.target.dataset.color
+
+
+            }
+        })
+
+        //點擊色票標籤，自動複製色票的文字信息
+        // 點擊色票標籤 > bom-clipboard API > 成功自動複製！
+        colorChart.addEventListener('click', function () {
+            console.log(navigator.clipboard.writeText(this.innerText));
+            navigator.clipboard.writeText(this.innerText).then(function () {
+                alert(`成功複製色票${body.style.backgroundColor}`)
+            }).catch(function () {
+                alert('複製色票失敗')
+            })
+
+        })
+
+
+
+    </script>
+
+
+</body>
+
+</html>
