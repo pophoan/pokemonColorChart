@@ -60,38 +60,13 @@
 
 
         .main-pic {
-            width: 340px;
-            height: 340px;
-            border: 1px solid #333;
+            width: 240px;
+            height: 240px;
+            /* background: pink; */
             filter: drop-shadow(5px 5px 5px blue);
 
             & img {
                 width: 100%;
-
-            }
-        }
-
-        .big-pic {
-            visibility: hidden;
-            position: absolute;
-            top: 0;
-            right: 120px;
-            width: 340px;
-            height: 340px;
-            border: 1px solid #333;
-            /* filter: drop-shadow(5px 5px 5px blue); */
-            overflow: hidden;
-
-            & img {
-                position: absolute;
-                left: 0px;
-                top: 0px;
-                width: 200%;
-
-            }
-
-            @media screen and (max-width:1400px) {
-                display: none;
             }
         }
 
@@ -101,14 +76,14 @@
         }
 
         .theme-title {
-            font-family: 'DotGothic16', sans-serif;
+            font-family: 'Rampart One', sans-serif;
             font-size: 5rem;
             text-align: center;
             letter-spacing: 10px;
-            color: #333;
-            /* background: linear-gradient(-45deg, #FBAB7E, #F7CE68, #85FFBD, #FFFB7D, #FFDEE9);
+            color: transparent;
+            background: linear-gradient(-45deg, #FBAB7E, #F7CE68, #85FFBD, #FFFB7D, #FFDEE9);
             background-size: 300% 300%;
-            -webkit-background-clip: text; */
+            -webkit-background-clip: text;
         }
 
         .color-chart {
@@ -131,17 +106,14 @@
 <body>
 
     <div class="container margin-special-top">
-
-        <div class="row justify-content-center position-relative">
-            <figure class="main-pic">
-                <img src="./images/1.png" alt="妙娃種子">
-            </figure>
-            <figure class="big-pic" id="big-pic">
-                <img src="./images/1.png" alt="妙娃種子">
-            </figure>
-
+        <div>
+            <h1 class="theme-title animate__animated  animate__tada animate__repeat-1 display-1">寶可夢色票</h1>
         </div>
-        <div class="tumb d-flex  justify-content-center mt-5">
+        <figure class="main-pic mx-auto">
+            <img src="./images/1.png" alt="妙娃種子">
+        </figure>
+
+        <div class="tumb d-flex  justify-content-center">
             <div class="pic ratio ratio-1x1 mx-2">
                 <img class="obj-fit-cover" data-color="#62d5b4" src="./images/1.png" alt="">
             </div>
@@ -158,12 +130,8 @@
                 <img class="obj-fit-cover" data-color="#5a4a9c" src="./images/94.png" alt="">
             </div>
         </div>
-
         <div class="color-chart text-center mt-5">
-            <div class="position-relative">
-                <h1 class="theme-title animate__animated  animate__tada animate__repeat-1 display-1">寶可夢色票</h1>
-            </div>
-            <h2 id="color-chart" class="display-3 mt-4">#62d5b4</h2>
+            <h2 id="color-chart" class="display-3 mt-5">#62d5b4</h2>
         </div>
     </div>
 
@@ -179,11 +147,6 @@
 
         // 主圖片元素（mainPic) >主圖片的src mainPic.src 
         const mainPic = document.querySelector('.main-pic img')
-        const bigPic = document.querySelector('#big-pic img')
-        let bgPicstyle = window.getComputedStyle(bigPic)
-
-
-
         // 抓button的元素(tumbButtons) ，做事件委託
         const tumbButtons = document.querySelector('.tumb')
 
@@ -207,8 +170,6 @@
 
                 // 替換mainPic的src為點擊的子元素srcs
                 mainPic.src = e.target.src
-                // 替換mainPic的src為點擊的子元素srcs
-                bigPic.src = e.target.src
 
                 // 更改背景色為點擊的子元素data-color
                 console.log(e.target.dataset.color);
@@ -232,22 +193,7 @@
             })
 
         })
-        // 滑鼠經過main-pic，顯示big-pic，並且滑鼠在main-pic中移動時，連帶移動big-pic圖片
-        // 1.滑鼠事件
-        mainPic.addEventListener('mousemove', function (e) {
-            bigPic.style.visibility = 'visible'
-            // 滑鼠在dom的x y距離
-            // console.log(e.offsetX, e.offsetY);
-            let moveX = e.offsetX
-            let moveY = e.offsetY
 
-            bigPic.style.transform = `translate(-${moveX}px, -${moveY}px)`;
-        })
-
-        mainPic.addEventListener('mouseleave', function (e) {
-            // console.log(bgPicstyle.visibility);
-            bigPic.style.visibility = 'hidden'
-        })
 
 
     </script>
