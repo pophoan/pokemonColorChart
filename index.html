@@ -44,6 +44,7 @@
         body {
             background: #62d5b4;
             transition: .5s;
+            cursor: none;
         }
 
         /* module */
@@ -60,13 +61,22 @@
 
 
         .main-pic {
-            width: 340px;
-            height: 340px;
+            --size: 340px;
+            width: var(--size);
+            height: var(--size);
             border: 1px solid #333;
-            filter: drop-shadow(5px 5px 5px blue);
+            border-radius: 20px;
+
+
+
+
+            filter: drop-shadow(2px 2px 2px blue);
+            transition: .5s;
+            animation: frameEffect 3s alternate infinite ease-in-out;
 
             & img {
                 width: 100%;
+                animation: changeSize 1s infinite alternate ease-in-out;
 
             }
         }
@@ -79,6 +89,7 @@
             width: 340px;
             height: 340px;
             border: 1px solid #333;
+            border-radius: 50%;
             /* filter: drop-shadow(5px 5px 5px blue); */
             overflow: hidden;
 
@@ -90,14 +101,26 @@
 
             }
 
-            @media screen and (max-width:1400px) {
+            @media screen and (max-width:768px) {
                 display: none;
             }
         }
 
         .pic {
+
             width: 72px;
             /* background: #ccc; */
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            transition: .3s ease-out;
+
+            &:hover {
+                transform: scale(1.2);
+            }
+        }
+
+        .pic.active {
+            border: 1px solid blue;
         }
 
         .theme-title {
@@ -122,6 +145,43 @@
                 &:hover {
                     color: #797979;
                 }
+            }
+        }
+
+        .mouseBall {
+            --size: 30px;
+            width: var(--size);
+            height: var(--size);
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            filter: (2px 2px 2px #333);
+
+            & img {
+                width: 100%;
+            }
+        }
+
+        @keyframes frameEffect {
+            from {}
+
+            to {
+                filter: drop-shadow(10px 10px 10px #333);
+
+
+            }
+        }
+
+        @keyframes changeSize {
+            from {
+                filter: brightness(0.9);
+            }
+
+            to {
+
+                filter: brightness(1);
+
             }
         }
     </style>
@@ -166,8 +226,10 @@
             <h2 id="color-chart" class="display-3 mt-4">#62d5b4</h2>
         </div>
     </div>
-
-
+    <!-- pokemonball -->
+    <figure class="mouseBall" id="mouseBall">
+        <img class="obj-fit-cover" src="/images/pokeball-normal.png" alt="">
+    </figure>
     <script>
         /* 需求： 製作點擊之後切換照片的效果 */
 
@@ -187,6 +249,11 @@
         // 抓button的元素(tumbButtons) ，做事件委託
         const tumbButtons = document.querySelector('.tumb')
 
+        //  抓所有button的.pic（img的父層）
+        const smallPicFrames = document.querySelectorAll('.tumb .pic')
+
+
+
         //改背景色>body元素>點擊觸發改背景色>body.style
         const body = document.body
 
@@ -194,12 +261,18 @@
         //色票文字
         const colorChart = document.querySelector('#color-chart')
 
+        // 寶可夢滑鼠
+        const mouseBall = document.querySelector('#mouseBall')
+        const doc = document
+
+
 
 
         // 2. 元素綁定點擊事件>3.拿到子元素的src屬性>4.將mainPic的src替換目標的srcs
 
         // 透過事件委託一次綁定所有button > 條件判定，只有點擊img標籤才會執行code
         tumbButtons.addEventListener('click', function (e) {
+
             // 條件判定，點擊的為,<img>標籤，才執行
             if (e.target.tagName === "IMG") {
                 //點擊時，拿到子元素的src
@@ -217,9 +290,22 @@
                 // 更改色票
                 colorChart.innerHTML = e.target.dataset.color
 
+                // 添加框架css樣式
+                // 每次增加前，先刪除所有樣式
+                smallPicFrames.forEach(frame => {
+                    frame.classList.contains('active') ? frame.classList.remove('active') : frame
+                });
+                // 增加選框
+                e.target.parentNode.classList.add('active')
+
+
 
             }
+
+
         })
+
+
 
         //點擊色票標籤，自動複製色票的文字信息
         // 點擊色票標籤 > bom-clipboard API > 成功自動複製！
@@ -230,6 +316,8 @@
             }).catch(function () {
                 alert('複製色票失敗')
             })
+
+
 
         })
         // 滑鼠經過main-pic，顯示big-pic，並且滑鼠在main-pic中移動時，連帶移動big-pic圖片
@@ -249,6 +337,14 @@
             bigPic.style.visibility = 'hidden'
         })
 
+        // 寶可夢滑鼠
+        document.addEventListener('mousemove', function (e) {
+            console.log(e.clientX, e.clientY);
+            let moveX = (e.clientX - mouseBall.clientWidth / 2) + 'px';
+            let moveY = (e.clientY - mouseBall.clientHeight / 2) + 'px';
+            mouseBall.style.transform = `translate(${moveX}, ${moveY})`
+
+        })
 
     </script>
 
